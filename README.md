@@ -1,36 +1,33 @@
-# Data Structures: Array Operations & Search Benchmarks
+# Data Structures: Sudoku Solver & File Parser
 
 [![Language](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS-lightgrey.svg)]()
 
-A modular C system implementing standard array manipulation algorithms, dynamic memory allocation, and benchmarking. Built as part of the **Data Structures** curriculum at the **University of West Attica (UNIWA)**.
+A robust C program designed to parse, validate, and solve Sudoku puzzles loaded dynamically from external text files. Built as part of the **Data Structures** curriculum at the **University of West Attica (UNIWA)**.
 
 ---
 
 ## Overview
 
-This project demonstrates pointer-based array operations without using bracket notation (`[]`), adhering strictly to dynamic memory management principles and memory safety. 
+This application accepts a formatted text file representing a $9 \times 9$ Sudoku grid, allocates dynamic 2D array memory, validates the input according to standard Sudoku rules, and computes the solution using a recursive backtracking algorithm.
 
 ### Key Features
-- **Dynamic Allocation**: Allocates dynamic memory for integer arrays based on user input.
-- **Pseudo-Random Generation**: Populates arrays with random integers within the range `[30, 500]`.
-- **Search Algorithms**:
-  - **Linear / Sequential Search**: Iterative search through raw memory addresses.
-  - **Binary Search**: Fast lookup implemented over sorted data copies.
-- **Sorting & Merging**:
-  - High-performance array sorting (e.g., QuickSort / MergeSort).
-  - Merging two sorted arrays of size $N$ into a single sorted array of size $2N$.
-- **File I/O Persistence**: Functions to save current array states to disk and load them back into memory.
-- **Performance Benchmarking (Optional Bonus)**: Empirical execution analysis comparing Linear vs. Binary search performance by measuring total element reads required to find all array entries.
+- **Dynamic Memory Management**: Allocates and frees $9 \times 9$ 2D matrices dynamically using standard C memory routines.
+- **CLI Parameter Parsing**: Reads puzzle input paths directly via command-line arguments (`argc`, `argv`).
+- **Strict File Format Validation**:
+  - Verifies exact layout ($9 \times 9$ character grid with newlines).
+  - Validates character set constraints (accepting digits `'0'`–`'9'`, where `'0'` indicates empty cells).
+- **Detailed Error Reporting**: Identifies structural file issues or specific rule violations (e.g., reporting exact row/column/sub-grid duplicate conflicts).
+- **Backtracking Solver Algorithm**: Solves valid board states efficiently and renders the final solution via terminal/TUI output (optional `ncurses` support).
 
 ---
 
 ## Technical Constraints & Principles
 
-- **No Bracket Notation (`[]`)**: All array indexing and traversal are strictly executed using explicit pointer arithmetic (e.g., `*(arr + i)`).
-- **No Global Variables**: State is passed explicitly via function arguments and references.
-- **Modular Architecture**: Complete menu-driven CLI interface separating dynamic generation, algorithm execution, file handling, and benchmarking.
+- **Dynamic Allocation Only**: No static arrays are used for grid storage.
+- **Localized Messages**: All UI and validation warning messages are generated in Greek.
+- **Clean Documentation**: Function-level header blocks detailing algorithm behaviors and state transformations.
 
 ---
 
@@ -39,11 +36,14 @@ This project demonstrates pointer-based array operations without using bracket n
 ```text
 .
 ├── src/
-│   ├── main.c              # Main loop and interactive CLI menu
-│   ├── array_ops.c         # Dynamic generation, search, sort, and merge logic
-│   └── file_io.c           # File load and store implementations
+│   ├── main.c              # Command line argument parser and main entry point
+│   ├── sudoku_io.c         # File loading, character parsing, and validation logic
+│   └── sudoku_solver.c     # Grid validity checking and recursive solver algorithms
 ├── include/
-│   ├── array_ops.h         # Function declarations and definitions
-│   └── file_io.h           # File I/O interfaces
-├── Makefile                # Build automation script
+│   ├── sudoku_io.h         # File handling and validation declarations
+│   └── sudoku_solver.h     # Core puzzle solver interfaces
+├── samples/
+│   ├── valid_board.txt     # Sample valid 9x9 Sudoku grid file
+│   └── invalid_board.txt   # Sample board file for testing error reporting
+├── Makefile                # Compilation script
 └── README.md               # Project documentation
